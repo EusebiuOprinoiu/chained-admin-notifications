@@ -25,7 +25,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 *     'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
 	 *     'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
 	 *     'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
-	 *     'ok-button-url'           => 'https://polygonthemes.com',                                              // External URL for the OK button
+	 *     'ok-button-url'           => '#',                                                                      // External URL for the OK button
 	 *     'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed
 	 *     'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
 	 *     'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
