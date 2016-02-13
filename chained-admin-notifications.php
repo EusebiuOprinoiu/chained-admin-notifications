@@ -25,8 +25,8 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 *     'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
 	 *     'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
 	 *     'ok-button-url'           => 'https://polygonthemes.com',                                              // External URL for the OK button
-	 *     'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display ( false or string )
 	 *     'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed ( false or int )
+	 *     'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display ( false or string )
 	 *     'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed ( false or int )
 	 * );
 	 *
@@ -47,8 +47,8 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'ok-button-label'         => __( 'Do Something', 'polygon' ),
 			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
 			'ok-button-url'           => 'https://polygonthemes.com',
-			'id-next'                 => 'polygon_notification_two',
 			'display-after-days'      => 30,
+			'id-next'                 => 'polygon_notification_two',
 			'display-next-after-days' => 30,
 		);
 
@@ -59,8 +59,8 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'ok-button-label'         => __( 'Do Something', 'polygon' ),
 			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
 			'ok-button-url'           => 'https://polygonthemes.com',
-			'id-next'                 => 'polygon_notification_three',
 			'display-after-days'      => false,
+			'id-next'                 => 'polygon_notification_three',
 			'display-next-after-days' => 60,
 		);
 
@@ -71,8 +71,8 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'ok-button-label'         => __( 'Do Something', 'polygon' ),
 			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
 			'ok-button-url'           => 'https://polygonthemes.com',
-			'id-next'                 => false,
 			'display-after-days'      => false,
+			'id-next'                 => false,
 			'display-next-after-days' => false,
 		);
 
@@ -181,8 +181,9 @@ class Polygon_Admin_Notifications {
 					$ok_button_label         = $notice['ok-button-label'];
 					$no_button_label         = $notice['no-button-label'];
 					$ok_button_url           = $notice['ok-button-url'];
-					$id_next                 = $notice['id-next'];
 					$display_after_days      = $notice['display-after-days'];
+
+					$id_next                 = $notice['id-next'];
 					$display_next_after_days = $notice['display-next-after-days'];
 
 					$meta_key_flag           = $notice['id'] . '_ignore_flag';
