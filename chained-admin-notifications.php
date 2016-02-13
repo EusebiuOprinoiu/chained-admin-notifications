@@ -3,7 +3,7 @@
  * Script for admin notifications in free WordPress themes
  *
  * @since      1.0.0
- * @package    Admin_Notifications
+ * @package    Chained_Admin_Notifications
  */
 
 
