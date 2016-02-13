@@ -288,7 +288,7 @@ class Polygon_Admin_Notifications {
 									<p></p>
 
 									<?php if ( $title ) { ?>
-										<p><b><?php echo wp_kses_post( $title ); ?></b></p>
+										<p style="font-weight: 700;"><?php echo wp_kses_post( $title ); ?></p>
 									<?php } ?>
 
 									<?php if ( $description ) { ?>
