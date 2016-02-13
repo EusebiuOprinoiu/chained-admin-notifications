@@ -136,9 +136,21 @@ class Polygon_Admin_Notifications {
 
 		foreach ( $users as $user ) {
 			foreach ( $notices as $notice ) {
+
 				// Variables ( Per Item )
-				$meta_key_flag      = $notice['id'] . '_ignore_flag';
-				$meta_key_timestamp = $notice['id'] . '_timestamp';
+				if ( isset( $notice['id'] ) ) {
+					$id = $notice['id'];
+				} else {
+					continue;
+				}
+
+
+
+				// User meta key IDs
+				$meta_key_flag      = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
+				$meta_key_timestamp = sanitize_title_with_dashes( $notice['id'] . '_timestamp' );
+
+
 
 				// Remove old user meta
 				delete_user_meta( $user->ID, $meta_key_flag );
@@ -177,6 +189,12 @@ class Polygon_Admin_Notifications {
 				foreach( $notices as $notice ) {
 
 					// Variables
+					if ( isset( $notice['id'] ) ) {
+						$id = $notice['id'];
+					} else {
+						continue;
+					}
+
 					if ( isset( $notice['title'] ) ) {
 						$title = $notice['title'];
 					} else {
@@ -207,7 +225,7 @@ class Polygon_Admin_Notifications {
 						$ok_button_url = '#';
 					}
 
-					if ( isset( $notice['display-after-days'] ) ) {
+					if ( ( isset( $notice['display-after-days'] ) ) && ( is_int( $notice['display-after-days'] ) ) ) {
 						$display_after_days = $notice['display-after-days'];
 					} else {
 						$display_after_days = false;
@@ -216,8 +234,8 @@ class Polygon_Admin_Notifications {
 
 
 					// User meta key IDs
-					$meta_key_flag      = $notice['id'] . '_ignore_flag';
-					$meta_key_timestamp = $notice['id'] . '_timestamp';
+					$meta_key_flag      = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
+					$meta_key_timestamp = sanitize_title_with_dashes( $notice['id'] . '_timestamp' );
 
 
 
@@ -290,13 +308,19 @@ class Polygon_Admin_Notifications {
 				foreach( $notices as $notice ) {
 
 					// Variables
+					if ( isset( $notice['id'] ) ) {
+						$id = $notice['id'];
+					} else {
+						continue;
+					}
+
 					if ( isset( $notice['id-next'] ) ) {
-						$id_next = $notice['id-next'];
+						$id_next = sanitize_title_with_dashes( $notice['id-next'] );
 					} else {
 						$id_next = false;
 					}
 
-					if ( isset( $notice['display-next-after-days'] ) ) {
+					if ( ( isset( $notice['display-next-after-days'] ) ) && ( is_int( $notice['display-next-after-days'] ) ) ) {
 						$display_next_after_days = $notice['display-next-after-days'];
 					} else {
 						$display_next_after_days = false;
@@ -305,10 +329,10 @@ class Polygon_Admin_Notifications {
 
 
 					// User meta key IDs
-					$meta_key_flag = $notice['id'] . '_ignore_flag';
+					$meta_key_flag = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
 
 					if ( $id_next ) {
-						$meta_key_timestamp_next = $notice['id-next'] . '_timestamp';
+						$meta_key_timestamp_next = sanitize_title_with_dashes( $notice['id-next'] . '_timestamp' );
 					}
 
 
