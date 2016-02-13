@@ -20,6 +20,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 *
 	 * $config[] = array(
 	 *     'id'                      => 'polygon_notification_one',                                               // Unique notification ID containing the slug ( required )
+	 *     'type'                    => 'info',                                                                   // Notification type: info or error
 	 *     'title'                   => __( 'First Notification', 'polygon' ),                                    // Notification title
 	 *     'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
 	 *     'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
@@ -28,6 +29,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 *     'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed
 	 *     'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
 	 *     'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
+	 *     'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand
 	 * );
 	 *
 	 * In order to chain notifications you must define 'id-next' and 'display-next-after-days'
@@ -195,28 +197,38 @@ class Polygon_Admin_Notifications {
 						continue;
 					}
 
+					if ( isset( $notice['type'] ) ) {
+						if ( $notice['type'] == 'error' ) {
+							$type = 'error';
+						} else {
+							$type = 'updated';
+						}
+					} else {
+						$type = 'updated';
+					}
+
 					if ( isset( $notice['title'] ) ) {
 						$title = $notice['title'];
 					} else {
-						$title = __( 'Notification', 'polygon' );
+						$title = false;
 					}
 
 					if ( isset( $notice['description'] ) ) {
 						$description = $notice['description'];
 					} else {
-						$description = __( 'Say something nice and useful to your admin users.', 'polygon' );
+						$description = false;
 					}
 
 					if ( isset( $notice['ok-button-label'] ) ) {
 						$ok_button_label = $notice['ok-button-label'];
 					} else {
-						$ok_button_label = __( 'Do Something', 'polygon' );
+						$ok_button_label = false;
 					}
 
 					if ( isset( $notice['no-button-label'] ) ) {
 						$no_button_label = $notice['no-button-label'];
 					} else {
-						$no_button_label = __( 'Hide Notice', 'polygon' );
+						$no_button_label = false;
 					}
 
 					if ( isset( $notice['ok-button-url'] ) ) {
@@ -229,6 +241,12 @@ class Polygon_Admin_Notifications {
 						$display_after_days = $notice['display-after-days'];
 					} else {
 						$display_after_days = false;
+					}
+
+					if ( isset( $notice['trigger-callback'] ) ) {
+						$trigger_callback = $notice['trigger-callback'];
+					} else {
+						$trigger_callback = false;
 					}
 
 
@@ -263,20 +281,43 @@ class Polygon_Admin_Notifications {
 
 
 					// Display notification
-					if ( ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) {
-						?>
-							<div class="updated polygon-info">
-								<p></p>
-								<p><b><?php echo wp_kses_post( $title ); ?></b></p>
-								<p><?php echo wp_kses_post( $description ); ?></p>
-								<p>
-									<a href="<?php echo esc_url( $ok_button_url ); ?>" target="_blank"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
-									|
-									<a href="?<?php echo esc_attr( $meta_key_flag ); ?>=0"><b><?php echo esc_html( $no_button_label ); ?></b></a>
-								</p>
-								<p></p>
-							</div>
-						<?php
+					if ( ( $trigger_callback && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) ||
+						( ( ! $trigger_callback ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) ) {
+							?>
+								<div class="<?php echo sanitize_html_class( $type ); ?> polygon-notice">
+									<p></p>
+
+									<?php if ( $title ) { ?>
+										<p><b><?php echo wp_kses_post( $title ); ?></b></p>
+									<?php } ?>
+
+									<?php if ( $description ) { ?>
+										<p><?php echo wp_kses_post( $description ); ?></p>
+									<?php } ?>
+
+									<?php if ( $ok_button_label || $no_button_label ) { ?>
+										<p>
+									<?php } ?>
+
+									<?php if ( $ok_button_label ) { ?>
+										<a href="<?php echo esc_url( $ok_button_url ); ?>" target="_blank"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+									<?php } ?>
+
+									<?php if ( $ok_button_label && $no_button_label ) { ?>
+										|
+									<?php } ?>
+
+									<?php if ( $no_button_label ) { ?>
+										<a href="?<?php echo esc_attr( $meta_key_flag ); ?>=0"><b><?php echo esc_html( $no_button_label ); ?></b></a>
+									<?php } ?>
+
+									<?php if ( $ok_button_label || $no_button_label ) { ?>
+										</p>
+									<?php } ?>
+
+									<p></p>
+								</div>
+							<?php
 					}
 
 				}
