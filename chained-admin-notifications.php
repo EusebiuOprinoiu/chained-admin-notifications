@@ -35,7 +35,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 * to avoid triggering the display countdown. The countdown in child notifications starts
 	 * when the parent is dismissed.
 	 *
-	 * The function must be added using the folowing filter:
+	 * The function must be added using the folowing filters:
 	 *     - 'polygon_activation_setup'
 	 *     - 'polygon_display_notifications'
 	 *     - 'polygon_ignore_notifications'.
