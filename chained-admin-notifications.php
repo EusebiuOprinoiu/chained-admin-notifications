@@ -25,7 +25,8 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 *     'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
 	 *     'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
 	 *     'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
-	 *     'ok-button-url'           => '#',                                                                      // External URL for the OK button
+	 *     'internal-url'            => 'edit-tags.php?taxonomy=category',                                        // Internal URL for the OK button ( Relative to the admin url )
+	 *     'external-url'            => 'https://google.com',                                                     // External URL for the OK button
 	 *     'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed
 	 *     'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
 	 *     'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
@@ -53,7 +54,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
 			'ok-button-label'         => __( 'Do Something', 'polygon' ),
 			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
-			'ok-button-url'           => 'https://polygonthemes.com',
+			'external-url'            => 'https://polygonthemes.com',
 			'display-after-days'      => 30,
 			'id-next'                 => 'polygon_notification_two',
 			'display-next-after-days' => 30,
@@ -65,7 +66,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
 			'ok-button-label'         => __( 'Do Something', 'polygon' ),
 			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
-			'ok-button-url'           => 'https://polygonthemes.com',
+			'external-url'            => 'https://polygonthemes.com',
 			'id-next'                 => 'polygon_notification_three',
 			'display-next-after-days' => 30,
 		);
@@ -76,7 +77,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
 			'ok-button-label'         => __( 'Do Something', 'polygon' ),
 			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
-			'ok-button-url'           => 'https://polygonthemes.com',
+			'external-url'            => 'https://polygonthemes.com',
 		);
 
 		$config[] = array(
@@ -240,10 +241,16 @@ class Polygon_Admin_Notifications {
 						$no_button_label = false;
 					}
 
-					if ( isset( $notice['ok-button-url'] ) ) {
-						$ok_button_url = $notice['ok-button-url'];
+					if ( isset( $notice['internal-url'] ) ) {
+						$internal_url = $notice['internal-url'];
 					} else {
-						$ok_button_url = '#';
+						$internal_url = false;
+					}
+
+					if ( isset( $notice['external-url'] ) ) {
+						$external_url = $notice['external-url'];
+					} else {
+						$external_url = false;
 					}
 
 					if ( ( isset( $notice['display-after-days'] ) ) && ( is_int( $notice['display-after-days'] ) ) ) {
@@ -309,10 +316,16 @@ class Polygon_Admin_Notifications {
 									<?php } ?>
 
 									<?php if ( $ok_button_label ) { ?>
-										<a href="<?php echo esc_url( $ok_button_url ); ?>" target="_blank"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+										<?php if ( $internal_url ) { ?>
+											<a href="<?php echo admin_url( esc_url( $internal_url ) ); ?>"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+										<?php } ?>
+
+										<?php if ( $external_url ) { ?>
+											<a href="<?php echo esc_url( $external_url ); ?>" target="_blank"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+										<?php } ?>
 									<?php } ?>
 
-									<?php if ( $ok_button_label && $no_button_label ) { ?>
+									<?php if ( ( $ok_button_label && $no_button_label ) && ( $internal_url || $external_url ) ) { ?>
 										|
 									<?php } ?>
 
