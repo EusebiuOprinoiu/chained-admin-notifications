@@ -325,7 +325,7 @@ class Polygon_Admin_Notifications {
 										<?php } ?>
 									<?php } ?>
 
-									<?php if ( ( $ok_button_label && $no_button_label ) && ( $internal_url || $external_url ) ) { ?>
+									<?php if ( ( $ok_button_label && $no_button_label && ( $internal_url || $external_url ) ) ) { ?>
 										|
 									<?php } ?>
 
