@@ -79,6 +79,15 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'ok-button-url'           => 'https://polygonthemes.com',
 		);
 
+		$config[] = array(
+			'id'                      => 'polygon_notification_four',
+			'type'                    => 'error',
+			'title'                   => __( 'Action-Based Notification', 'polygon' ),
+			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
+			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
+			'trigger-callback'        => true,
+		);
+
 		return $config;
 	}
 	add_filter( 'polygon_activation_setup', 'polygon_notifications_setup' );
