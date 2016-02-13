@@ -16,7 +16,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 * Configure admin notifications.
 	 *
 	 * Register and configure admin notifications by adding arrays like the one below
-	 * to the $config variable. All parameters are required.
+	 * to the $config variable. Only the 'id' parameter is required.
 	 *
 	 * $config[] = array(
 	 *     'id'                      => 'polygon_notification_one',                                               // Unique notification ID containing the slug ( required )
@@ -37,7 +37,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 * to avoid triggering the display countdown. The countdown in child notifications starts
 	 * when the parent is dismissed.
 	 *
-	 * The function must be added using the folowing filters:
+	 * The function must be added using the following filters:
 	 *     - 'polygon_activation_setup'
 	 *     - 'polygon_display_notifications'
 	 *     - 'polygon_ignore_notifications'.
