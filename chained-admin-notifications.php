@@ -27,8 +27,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	 *     'ok-button-url'           => 'https://polygonthemes.com',                                              // External URL for the OK button
 	 *     'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display ( false or string )
 	 *     'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed ( false or int )
-	 *     'display-after-days-next' => 30,                                                                       // Number of days after the next notification is displayed ( false or int )
-	 *     'manual-trigger'          => false,                                                                    // Manual trigger of the notification - action based
+	 *     'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed ( false or int )
 	 * );
 	 *
 	 * The function must be added using the folowing filter:
@@ -50,8 +49,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'ok-button-url'           => 'https://polygonthemes.com',
 			'id-next'                 => 'polygon_notification_two',
 			'display-after-days'      => 30,
-			'display-after-days-next' => 30,
-			'manual-trigger'          => false,
+			'display-next-after-days' => 30,
 		);
 
 		$config[] = array(
@@ -63,8 +61,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'ok-button-url'           => 'https://polygonthemes.com',
 			'id-next'                 => 'polygon_notification_three',
 			'display-after-days'      => false,
-			'display-after-days-next' => 60,
-			'manual-trigger'          => false,
+			'display-next-after-days' => 60,
 		);
 
 		$config[] = array(
@@ -76,8 +73,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'ok-button-url'           => 'https://polygonthemes.com',
 			'id-next'                 => false,
 			'display-after-days'      => false,
-			'display-after-days-next' => false,
-			'manual-trigger'          => false,
+			'display-next-after-days' => false,
 		);
 
 		return $config;
@@ -187,8 +183,7 @@ class Polygon_Admin_Notifications {
 					$ok_button_url           = $notice['ok-button-url'];
 					$id_next                 = $notice['id-next'];
 					$display_after_days      = $notice['display-after-days'];
-					$display_after_days_next = $notice['display-after-days-next'];
-					$manual_trigger          = $notice['manual-trigger'];
+					$display_next_after_days = $notice['display-next-after-days'];
 
 					$meta_key_flag           = $notice['id'] . '_ignore_flag';
 					$meta_key_timestamp      = $notice['id'] . '_timestamp';
@@ -200,8 +195,8 @@ class Polygon_Admin_Notifications {
 						$display_after_days = $display_after_days * DAY_IN_SECONDS;
 					}
 
-					if ( $display_after_days_next ) {
-						$display_after_days_next = $display_after_days_next * DAY_IN_SECONDS;
+					if ( $display_next_after_days ) {
+						$display_next_after_days = $display_next_after_days * DAY_IN_SECONDS;
 					}
 
 
@@ -223,8 +218,7 @@ class Polygon_Admin_Notifications {
 
 
 					// Display notification
-					if ( ( $manual_trigger ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ||
-						( ( ! $manual_trigger ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) ) {
+					if ( ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) {
 							?>
 								<div class="updated polygon-info">
 									<p></p>
@@ -270,7 +264,7 @@ class Polygon_Admin_Notifications {
 
 					// Variables ( Per Item )
 					$id_next                  = $notice['id-next'];
-					$display_after_days_next  = $notice['display-after-days-next'];
+					$display_next_after_days  = $notice['display-next-after-days'];
 
 					$meta_key_flag            = $notice['id'] . '_ignore_flag';
 					$meta_key_timestamp_next  = $notice['id-next'] . '_timestamp';
@@ -278,14 +272,14 @@ class Polygon_Admin_Notifications {
 
 
 					// Manipulate variables
-					$display_after_days_next = $display_after_days_next * DAY_IN_SECONDS;
+					$display_next_after_days = $display_next_after_days * DAY_IN_SECONDS;
 
 
 
 					// Update user meta when the NO button is pressed
 					if ( isset( $_GET[$meta_key_flag] ) && ( $_GET[$meta_key_flag] == 0 ) ) {
 						if ( ( $id_next ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) {
-							update_user_meta( $current_user->ID, $meta_key_timestamp_next, time() + $display_after_days_next );
+							update_user_meta( $current_user->ID, $meta_key_timestamp_next, time() + $display_next_after_days );
 						}
 						add_user_meta( $current_user->ID, $meta_key_flag, 'true', true );
 					}
