@@ -15,38 +15,32 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	/**
 	 * Configure admin notifications.
 	 *
-	 * Register and configure admin notifications by adding arrays like the one below
-	 * to the $config variable. Only the 'id' parameter is required.
-	 *
-	 * $config[] = array(
-	 *     'id'                      => 'polygon_notification_one',                                               // Unique notification ID containing the slug ( required )
-	 *     'type'                    => 'info',                                                                   // Notification type: info or error
-	 *     'title'                   => __( 'First Notification', 'polygon' ),                                    // Notification title
-	 *     'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
-	 *     'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
-	 *     'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
-	 *     'internal-url'            => 'edit-tags.php?taxonomy=category',                                        // Internal URL for the OK button ( Relative to the admin url )
-	 *     'external-url'            => 'https://google.com',                                                     // External URL for the OK button
-	 *     'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed
-	 *     'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
-	 *     'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
-	 *     'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand
-	 * );
-	 *
-	 * In order to chain notifications you must define 'id-next' and 'display-next-after-days'
-	 * in the parent notification. Do not define 'display-after-days' in the child notification
-	 * to avoid triggering the display countdown. The countdown in child notifications starts
-	 * when the parent is dismissed.
-	 *
-	 * The function must be added using the following filters:
-	 *     - 'polygon_activation_setup'
-	 *     - 'polygon_display_notifications'
-	 *     - 'polygon_ignore_notifications'.
+	 * Register and configure admin notifications by adding them as an array.
+	 * For detailed usage instructions see the inline documentation from the
+	 * 'Polygon_Admin_Notifications' class.
 	 *
 	 * @since     1.0.0
 	 * @return    array    Array of notices with detailed parameters.
 	 */
 	function polygon_notifications_setup( $config ) {
+
+		// Example with all parameters
+		/*
+		$config[] = array(
+			'id'                      => 'polygon_notification_one',                                               // Unique notification ID containing the slug ( required )
+			'type'                    => 'info',                                                                   // Notification type: info or error
+			'title'                   => __( 'First Notification', 'polygon' ),                                    // Notification title
+			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
+			'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
+			'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
+			'internal-url'            => 'edit-tags.php?taxonomy=category',                                        // Internal URL for the OK button ( Relative to the admin url )
+			'external-url'            => 'https://google.com',                                                     // External URL for the OK button
+			'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed
+			'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
+			'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
+			'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand
+		);
+		*/
 
 		$config[] = array(
 			'id'                      => 'polygon_notification_one',
@@ -108,173 +102,99 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 
 
 
-class Polygon_Admin_Notifications {
+if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 
 	/**
-	 * All dynamic notifications.
+	 * Class for dynamic admin notifications.
 	 *
-	 * @since     1.0.0
-	 * @var       array
-	 */
-	public $notices = null;
-
-
-
-
-
-	/**
-	 * Initialize the class and set its properties.
+	 * This is a class containing the logic required to create dynamic chained
+	 * notifications. To use it, all you need is a function with an array of notifications
+	 * hooked on 'polygon_admin_notifications'. Only the 'id' parameter is required.
 	 *
-	 * Register the hooks required for our class.
+	 * function polygon_notifications_setup( $config ) {
+	 *     $config[] = array(
+	 *         'id'                      => 'polygon_notification_one',                                               // Unique notification ID containing the slug ( required )
+	 *         'type'                    => 'info',                                                                   // Notification type: info or error
+	 *         'title'                   => __( 'First Notification', 'polygon' ),                                    // Notification title
+	 *         'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
+	 *         'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
+	 *         'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
+	 *         'internal-url'            => 'edit-tags.php?taxonomy=category',                                        // Internal URL for the OK button ( Relative to the admin url )
+	 *         'external-url'            => 'https://google.com',                                                     // External URL for the OK button
+	 *         'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed
+	 *         'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
+	 *         'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
+	 *         'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand
+	 *     );
+	 *     return $config;
+	 * }
+	 * add_filter( 'polygon_admin_notifications', 'polygon_notifications_setup' );
+	 *
+	 * In order to chain notifications you must define 'id-next' and 'display-next-after-days'
+	 * in the parent notification. Do not define 'display-after-days' in the child notification
+	 * to avoid triggering the display countdown. The countdown in child notifications starts
+	 * when the parent is dismissed.
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	class Polygon_Admin_Notifications {
 
-		// Retreive dynamic notifications
-		$this->notices = apply_filters( 'polygon_admin_notifications', null );
-
-		// Register hooks
-		add_action( 'after_switch_theme', array( $this, 'activation_setup' ) );
-		add_action( 'admin_notices', array( $this, 'display_notifications' ) );
-		add_action( 'admin_init', array( $this, 'ignore_notifications' ) );
-	}
-
+		/**
+		 * All dynamic notifications.
+		 *
+		 * @since     1.0.0
+		 * @var       array
+		 */
+		public $notices = null;
 
 
 
 
-	/**
-	 * Activation setup for bottle messages.
-	 *
-	 * Cycle through the existing users and clean their meta after switching themes
-	 * to prevent conflicts with old data. By deactivating / reactivating the theme
-	 * all counters are reset.
-	 *
-	 * @since     1.0.0
-	 */
-	public function activation_setup() {
-		// Variables
-		$notices = $this->notices;
-		$users   = get_users();
 
-		foreach ( $users as $user ) {
-			foreach ( $notices as $notice ) {
+		/**
+		 * Initialize the class and set its properties.
+		 *
+		 * Register the hooks required for our class.
+		 *
+		 * @since    1.0.0
+		 */
+		public function __construct() {
 
-				// Variables ( Per Item )
-				if ( isset( $notice['id'] ) ) {
-					$id = $notice['id'];
-				} else {
-					continue;
-				}
+			// Retreive dynamic notifications
+			$this->notices = apply_filters( 'polygon_admin_notifications', null );
 
-
-
-				// User meta key IDs
-				$meta_key_flag      = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
-				$meta_key_timestamp = sanitize_title_with_dashes( $notice['id'] . '_timestamp' );
-
-
-
-				// Remove old user meta
-				delete_user_meta( $user->ID, $meta_key_flag );
-				delete_user_meta( $user->ID, $meta_key_timestamp );
-			}
+			// Register hooks
+			add_action( 'after_switch_theme', array( $this, 'activation_setup' ) );
+			add_action( 'admin_notices', array( $this, 'display_notifications' ) );
+			add_action( 'admin_init', array( $this, 'ignore_notifications' ) );
 		}
-	}
 
 
 
 
 
-	/**
-	 * Display notifications.
-	 *
-	 * If the current user has admin privileges cycle through all notices and display
-	 * them when the following conditions are met.
-	 *     - the number of days set in 'display-after-days' has passed ( timed notification )
-	 *     - the number of days set in 'display-next-after-days' in parent notification has
-	 *       passed ( chained notification )
-	 *
-	 * When the notification message is displayed the user has the option to go to an
-	 * external URL or to permanently dismiss the message.
-	 *
-	 * @since     1.0.0
-	 */
-	public function display_notifications() {
-		if ( current_user_can( 'manage_options' ) ) {
-			// Global variables
-			global $current_user;
-
+		/**
+		 * Activation setup for bottle messages.
+		 *
+		 * Cycle through the existing users and clean their meta after switching themes
+		 * to prevent conflicts with old data. By deactivating / reactivating the theme
+		 * all counters are reset.
+		 *
+		 * @since     1.0.0
+		 */
+		public function activation_setup() {
 			// Variables
 			$notices = $this->notices;
+			$users   = get_users();
 
-			if ( $notices ) {
-				foreach( $notices as $notice ) {
+			foreach ( $users as $user ) {
+				foreach ( $notices as $notice ) {
 
-					// Variables
+					// Variables ( Per Item )
 					if ( isset( $notice['id'] ) ) {
 						$id = $notice['id'];
 					} else {
 						continue;
-					}
-
-					if ( isset( $notice['type'] ) ) {
-						if ( $notice['type'] == 'error' ) {
-							$type = 'error';
-						} else {
-							$type = 'updated';
-						}
-					} else {
-						$type = 'updated';
-					}
-
-					if ( isset( $notice['title'] ) ) {
-						$title = $notice['title'];
-					} else {
-						$title = false;
-					}
-
-					if ( isset( $notice['description'] ) ) {
-						$description = $notice['description'];
-					} else {
-						$description = false;
-					}
-
-					if ( isset( $notice['ok-button-label'] ) ) {
-						$ok_button_label = $notice['ok-button-label'];
-					} else {
-						$ok_button_label = false;
-					}
-
-					if ( isset( $notice['no-button-label'] ) ) {
-						$no_button_label = $notice['no-button-label'];
-					} else {
-						$no_button_label = false;
-					}
-
-					if ( isset( $notice['internal-url'] ) ) {
-						$internal_url = $notice['internal-url'];
-					} else {
-						$internal_url = false;
-					}
-
-					if ( isset( $notice['external-url'] ) ) {
-						$external_url = $notice['external-url'];
-					} else {
-						$external_url = false;
-					}
-
-					if ( ( isset( $notice['display-after-days'] ) ) && ( is_int( $notice['display-after-days'] ) ) ) {
-						$display_after_days = $notice['display-after-days'];
-					} else {
-						$display_after_days = false;
-					}
-
-					if ( isset( $notice['trigger-callback'] ) ) {
-						$trigger_callback = $notice['trigger-callback'];
-					} else {
-						$trigger_callback = false;
 					}
 
 
@@ -285,151 +205,262 @@ class Polygon_Admin_Notifications {
 
 
 
-					// Manipulate variables
-					if ( $display_after_days ) {
-						$display_after_days = $display_after_days * DAY_IN_SECONDS;
-					}
+					// Remove old user meta
+					delete_user_meta( $user->ID, $meta_key_flag );
+					delete_user_meta( $user->ID, $meta_key_timestamp );
+				}
+			}
+		}
 
 
 
-					// Set the initial timestamp
-					if ( ! get_user_meta( $current_user->ID, $meta_key_timestamp ) ) {
-						if ( $display_after_days ) {
-							add_user_meta( $current_user->ID, $meta_key_timestamp, time() + $display_after_days, true );
+
+
+		/**
+		 * Display notifications.
+		 *
+		 * If the current user has admin privileges cycle through all notices and display
+		 * them when the following conditions are met.
+		 *     - the number of days set in 'display-after-days' has passed ( timed notification )
+		 *     - the number of days set in 'display-next-after-days' in parent notification has
+		 *       passed ( chained notification )
+		 *
+		 * When the notification message is displayed the user has the option to go to an
+		 * external URL or to permanently dismiss the message.
+		 *
+		 * @since     1.0.0
+		 */
+		public function display_notifications() {
+			if ( current_user_can( 'manage_options' ) ) {
+				// Global variables
+				global $current_user;
+
+				// Variables
+				$notices = $this->notices;
+
+				if ( $notices ) {
+					foreach( $notices as $notice ) {
+
+						// Variables
+						if ( isset( $notice['id'] ) ) {
+							$id = $notice['id'];
 						} else {
-							add_user_meta( $current_user->ID, $meta_key_timestamp, time() + YEAR_IN_SECONDS, true );
+							continue;
 						}
-					}
+
+						if ( isset( $notice['type'] ) ) {
+							if ( $notice['type'] == 'error' ) {
+								$type = 'error';
+							} else {
+								$type = 'updated';
+							}
+						} else {
+							$type = 'updated';
+						}
+
+						if ( isset( $notice['title'] ) ) {
+							$title = $notice['title'];
+						} else {
+							$title = false;
+						}
+
+						if ( isset( $notice['description'] ) ) {
+							$description = $notice['description'];
+						} else {
+							$description = false;
+						}
+
+						if ( isset( $notice['ok-button-label'] ) ) {
+							$ok_button_label = $notice['ok-button-label'];
+						} else {
+							$ok_button_label = false;
+						}
+
+						if ( isset( $notice['no-button-label'] ) ) {
+							$no_button_label = $notice['no-button-label'];
+						} else {
+							$no_button_label = false;
+						}
+
+						if ( isset( $notice['internal-url'] ) ) {
+							$internal_url = $notice['internal-url'];
+						} else {
+							$internal_url = false;
+						}
+
+						if ( isset( $notice['external-url'] ) ) {
+							$external_url = $notice['external-url'];
+						} else {
+							$external_url = false;
+						}
+
+						if ( ( isset( $notice['display-after-days'] ) ) && ( is_int( $notice['display-after-days'] ) ) ) {
+							$display_after_days = $notice['display-after-days'];
+						} else {
+							$display_after_days = false;
+						}
+
+						if ( isset( $notice['trigger-callback'] ) ) {
+							$trigger_callback = $notice['trigger-callback'];
+						} else {
+							$trigger_callback = false;
+						}
 
 
 
-					// Retreive the current timestamp
-					$display_after_days_timestamp = get_user_meta( $current_user->ID, $meta_key_timestamp, true );
+						// User meta key IDs
+						$meta_key_flag      = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
+						$meta_key_timestamp = sanitize_title_with_dashes( $notice['id'] . '_timestamp' );
 
 
 
-					// Display notification
-					if ( ( $trigger_callback && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) ||
-						( ( ! $trigger_callback ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) ) {
-							?>
-								<div class="<?php echo sanitize_html_class( $type ); ?> polygon-notice">
-									<p></p>
+						// Manipulate variables
+						if ( $display_after_days ) {
+							$display_after_days = $display_after_days * DAY_IN_SECONDS;
+						}
 
-									<?php if ( $title ) { ?>
-										<p style="font-weight: 700;"><?php echo wp_kses_post( $title ); ?></p>
-									<?php } ?>
 
-									<?php if ( $description ) { ?>
-										<p><?php echo wp_kses_post( $description ); ?></p>
-									<?php } ?>
 
-									<?php if ( $ok_button_label || $no_button_label ) { ?>
-										<p>
-									<?php } ?>
+						// Set the initial timestamp
+						if ( ! get_user_meta( $current_user->ID, $meta_key_timestamp ) ) {
+							if ( $display_after_days ) {
+								add_user_meta( $current_user->ID, $meta_key_timestamp, time() + $display_after_days, true );
+							} else {
+								add_user_meta( $current_user->ID, $meta_key_timestamp, time() + YEAR_IN_SECONDS, true );
+							}
+						}
 
-									<?php if ( $ok_button_label ) { ?>
-										<?php if ( $internal_url ) { ?>
-											<a href="<?php echo admin_url( esc_url( $internal_url ) ); ?>"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+
+
+						// Retreive the current timestamp
+						$display_after_days_timestamp = get_user_meta( $current_user->ID, $meta_key_timestamp, true );
+
+
+
+						// Display notification
+						if ( ( $trigger_callback && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) ||
+							( ( ! $trigger_callback ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) ) {
+								?>
+									<div class="<?php echo sanitize_html_class( $type ); ?> polygon-notice">
+										<p></p>
+
+										<?php if ( $title ) { ?>
+											<p style="font-weight: 700;"><?php echo wp_kses_post( $title ); ?></p>
 										<?php } ?>
 
-										<?php if ( $external_url ) { ?>
-											<a href="<?php echo esc_url( $external_url ); ?>" target="_blank"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+										<?php if ( $description ) { ?>
+											<p><?php echo wp_kses_post( $description ); ?></p>
 										<?php } ?>
-									<?php } ?>
 
-									<?php if ( ( $ok_button_label && $no_button_label && ( $internal_url || $external_url ) ) ) { ?>
-										|
-									<?php } ?>
+										<?php if ( $ok_button_label || $no_button_label ) { ?>
+											<p>
+										<?php } ?>
 
-									<?php if ( $no_button_label ) { ?>
-										<a href="?<?php echo esc_attr( $meta_key_flag ); ?>=0"><b><?php echo esc_html( $no_button_label ); ?></b></a>
-									<?php } ?>
+										<?php if ( $ok_button_label ) { ?>
+											<?php if ( $internal_url ) { ?>
+												<a href="<?php echo admin_url( esc_url( $internal_url ) ); ?>"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+											<?php } ?>
 
-									<?php if ( $ok_button_label || $no_button_label ) { ?>
-										</p>
-									<?php } ?>
+											<?php if ( $external_url ) { ?>
+												<a href="<?php echo esc_url( $external_url ); ?>" target="_blank"><b><?php echo esc_html( $ok_button_label ); ?></b></a>
+											<?php } ?>
+										<?php } ?>
 
-									<p></p>
-								</div>
-							<?php
+										<?php if ( ( $ok_button_label && $no_button_label && ( $internal_url || $external_url ) ) ) { ?>
+											|
+										<?php } ?>
+
+										<?php if ( $no_button_label ) { ?>
+											<a href="?<?php echo esc_attr( $meta_key_flag ); ?>=0"><b><?php echo esc_html( $no_button_label ); ?></b></a>
+										<?php } ?>
+
+										<?php if ( $ok_button_label || $no_button_label ) { ?>
+											</p>
+										<?php } ?>
+
+										<p></p>
+									</div>
+								<?php
+						}
+
 					}
 
 				}
-
 			}
 		}
-	}
 
 
 
 
 
-	/**
-	 * Hide notifications.
-	 *
-	 * Check if the notifications are dismissed update the user meta accordingly.
-	 *
-	 * @since     1.0.0
-	 */
-	public function ignore_notifications() {
-		if ( current_user_can( 'manage_options' ) ) {
-			// Global variables
-			global $current_user;
+		/**
+		 * Hide notifications.
+		 *
+		 * Check if the notifications are dismissed update the user meta accordingly.
+		 *
+		 * @since     1.0.0
+		 */
+		public function ignore_notifications() {
+			if ( current_user_can( 'manage_options' ) ) {
+				// Global variables
+				global $current_user;
 
-			// Variables
-			$notices = $this->notices;
+				// Variables
+				$notices = $this->notices;
 
-			if ( $notices ) {
-				foreach( $notices as $notice ) {
+				if ( $notices ) {
+					foreach( $notices as $notice ) {
 
-					// Variables
-					if ( isset( $notice['id'] ) ) {
-						$id = $notice['id'];
-					} else {
-						continue;
-					}
-
-					if ( isset( $notice['id-next'] ) ) {
-						$id_next = sanitize_title_with_dashes( $notice['id-next'] );
-					} else {
-						$id_next = false;
-					}
-
-					if ( ( isset( $notice['display-next-after-days'] ) ) && ( is_int( $notice['display-next-after-days'] ) ) ) {
-						$display_next_after_days = $notice['display-next-after-days'];
-					} else {
-						$display_next_after_days = false;
-					}
-
-
-
-					// User meta key IDs
-					$meta_key_flag = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
-
-					if ( $id_next ) {
-						$meta_key_timestamp_next = sanitize_title_with_dashes( $notice['id-next'] . '_timestamp' );
-					}
-
-
-
-					// Manipulate variables
-					if ( $display_next_after_days ) {
-						$display_next_after_days = $display_next_after_days * DAY_IN_SECONDS;
-					}
-
-
-
-					// Update user meta when the NO button is pressed
-					if ( isset( $_GET[$meta_key_flag] ) && ( $_GET[$meta_key_flag] == 0 ) ) {
-						if ( ( $id_next ) && ( $display_next_after_days ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) {
-							update_user_meta( $current_user->ID, $meta_key_timestamp_next, time() + $display_next_after_days );
+						// Variables
+						if ( isset( $notice['id'] ) ) {
+							$id = $notice['id'];
+						} else {
+							continue;
 						}
-						add_user_meta( $current_user->ID, $meta_key_flag, 'true', true );
-					}
 
+						if ( isset( $notice['id-next'] ) ) {
+							$id_next = sanitize_title_with_dashes( $notice['id-next'] );
+						} else {
+							$id_next = false;
+						}
+
+						if ( ( isset( $notice['display-next-after-days'] ) ) && ( is_int( $notice['display-next-after-days'] ) ) ) {
+							$display_next_after_days = $notice['display-next-after-days'];
+						} else {
+							$display_next_after_days = false;
+						}
+
+
+
+						// User meta key IDs
+						$meta_key_flag = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
+
+						if ( $id_next ) {
+							$meta_key_timestamp_next = sanitize_title_with_dashes( $notice['id-next'] . '_timestamp' );
+						}
+
+
+
+						// Manipulate variables
+						if ( $display_next_after_days ) {
+							$display_next_after_days = $display_next_after_days * DAY_IN_SECONDS;
+						}
+
+
+
+						// Update user meta when the NO button is pressed
+						if ( isset( $_GET[$meta_key_flag] ) && ( $_GET[$meta_key_flag] == 0 ) ) {
+							if ( ( $id_next ) && ( $display_next_after_days ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) {
+								update_user_meta( $current_user->ID, $meta_key_timestamp_next, time() + $display_next_after_days );
+							}
+							add_user_meta( $current_user->ID, $meta_key_flag, 'true', true );
+						}
+
+					}
 				}
 			}
 		}
+
 	}
 
 }
