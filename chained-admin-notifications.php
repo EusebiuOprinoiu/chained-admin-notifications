@@ -39,6 +39,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 			'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
 			'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
 			'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand
+			'slim-notification'       => true,                                                                     // Remove extra margins for slimmer notifications
 		);
 		*/
 
@@ -125,6 +126,7 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 	 *         'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
 	 *         'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
 	 *         'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand
+	 *         'slim-notification'       => true,                                                                     // Remove extra margins for slimmer notifications
 	 *     );
 	 *     return $config;
 	 * }
@@ -306,6 +308,12 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 							$trigger_callback = false;
 						}
 
+						if ( isset( $notice['slim-notification'] ) ) {
+							$slim_notification = $notice['slim-notification'];
+						} else {
+							$slim_notification = false;
+						}
+
 
 
 						// User meta key IDs
@@ -341,8 +349,10 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 						if ( ( $trigger_callback && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) ||
 							( ( ! $trigger_callback ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) ) {
 								?>
-									<div class="<?php echo sanitize_html_class( $type ); ?> polygon-notice">
-										<p></p>
+									<div class="<?php echo sanitize_html_class( $type ); ?> notice polygon-notice">
+										<?php if ( ! $slim_notification ) { ?>
+											<p></p>
+										<?php } ?>
 
 										<?php if ( $title ) { ?>
 											<p style="font-weight: 700;"><?php echo wp_kses_post( $title ); ?></p>
@@ -378,7 +388,9 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 											</p>
 										<?php } ?>
 
-										<p></p>
+										<?php if ( ! $slim_notification ) { ?>
+											<p></p>
+										<?php } ?>
 									</div>
 								<?php
 						}
