@@ -91,9 +91,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 
 		return $config;
 	}
-	add_filter( 'polygon_activation_setup', 'polygon_notifications_setup' );
-	add_filter( 'polygon_display_notifications', 'polygon_notifications_setup' );
-	add_filter( 'polygon_ignore_notifications', 'polygon_notifications_setup' );
+	add_filter( 'polygon_admin_notifications', 'polygon_notifications_setup' );
 
 }
 
@@ -113,6 +111,18 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 class Polygon_Admin_Notifications {
 
 	/**
+	 * All dynamic notifications.
+	 *
+	 * @since     1.0.0
+	 * @var       array
+	 */
+	public $notices = null;
+
+
+
+
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * Register the hooks required for our class.
@@ -121,11 +131,13 @@ class Polygon_Admin_Notifications {
 	 */
 	public function __construct() {
 
+		// Retreive dynamic notifications
+		$this->notices = apply_filters( 'polygon_admin_notifications', null );
+
 		// Register hooks
 		add_action( 'after_switch_theme', array( $this, 'activation_setup' ) );
 		add_action( 'admin_notices', array( $this, 'display_notifications' ) );
 		add_action( 'admin_init', array( $this, 'ignore_notifications' ) );
-
 	}
 
 
@@ -143,7 +155,7 @@ class Polygon_Admin_Notifications {
 	 */
 	public function activation_setup() {
 		// Variables
-		$notices = apply_filters( 'polygon_activation_setup', null );
+		$notices = $this->notices;
 		$users   = get_users();
 
 		foreach ( $users as $user ) {
@@ -195,7 +207,7 @@ class Polygon_Admin_Notifications {
 			global $current_user;
 
 			// Variables
-			$notices = apply_filters( 'polygon_display_notifications', null );
+			$notices = $this->notices;
 
 			if ( $notices ) {
 				foreach( $notices as $notice ) {
@@ -365,7 +377,7 @@ class Polygon_Admin_Notifications {
 			global $current_user;
 
 			// Variables
-			$notices = apply_filters( 'polygon_ignore_notifications', null );
+			$notices = $this->notices;
 
 			if ( $notices ) {
 				foreach( $notices as $notice ) {
