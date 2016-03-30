@@ -6,8 +6,11 @@
  * @package Chained_Admin_Notifications
  */
 
-if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 
+
+
+
+if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 	/**
 	 * Configure admin notifications.
 	 *
@@ -23,28 +26,28 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 		/*
 		// Example with all parameters.
 		$config[] = array(
-			'id'                      => 'polygon_notification_one',                                               // Unique notification ID containing the slug ( required ).
-			'type'                    => 'info',                                                                   // Notification type: info or error.
-			'title'                   => __( 'First Notification', 'polygon' ),                                    // Notification title.
-			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description.
-			'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button.
-			'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button.
-			'internal-url'            => 'edit-tags.php?taxonomy=category',                                        // Internal URL for the OK button ( Relative to the admin url ).
-			'external-url'            => 'https://google.com',                                                     // External URL for the OK button.
-			'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed.
-			'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display.
-			'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed.
-			'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand.
-			'slim-notification'       => true,                                                                     // Remove extra margins for slimmer notifications.
+			'id'                      => 'polygon_notification_one',                                                       // Unique notification ID containing the slug ( required ).
+			'type'                    => 'info',                                                                           // Notification type: info or error.
+			'title'                   => esc_html__( 'First Notification', 'polygon' ),                                    // Notification title.
+			'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description.
+			'ok-button-label'         => esc_html__( 'Do Something', 'polygon' ),                                          // Label for the OK button.
+			'no-button-label'         => esc_html__( 'Hide Notice', 'polygon' ),                                           // Label for the NO button.
+			'internal-url'            => 'edit-tags.php?taxonomy=category',                                                // Internal URL for the OK button ( Relative to the admin url ).
+			'external-url'            => 'https://google.com',                                                             // External URL for the OK button.
+			'display-after-days'      => 30,                                                                               // Number of days after the notification is displayed.
+			'id-next'                 => 'polygon_notification_two',                                                       // ID of the next notification to display.
+			'display-next-after-days' => 30,                                                                               // Number of days after the next notification is displayed.
+			'trigger-callback'        => trigger_logic(),                                                                  // Callback function returning true or false to trigger notification on demand.
+			'slim-notification'       => true,                                                                             // Remove extra margins for slimmer notifications.
 		);
 		*/
 
 		$config[] = array(
 			'id'                      => 'polygon_notification_one',
-			'title'                   => __( 'First Notification', 'polygon' ),
-			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
-			'ok-button-label'         => __( 'External URL', 'polygon' ),
-			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
+			'title'                   => esc_html__( 'First Notification', 'polygon' ),
+			'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),
+			'ok-button-label'         => esc_html__( 'External URL', 'polygon' ),
+			'no-button-label'         => esc_html__( 'Hide Notice', 'polygon' ),
 			'external-url'            => 'https://polygonthemes.com',
 			'display-after-days'      => 30,
 			'id-next'                 => 'polygon_notification_two',
@@ -53,10 +56,10 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 
 		$config[] = array(
 			'id'                      => 'polygon_notification_two',
-			'title'                   => __( 'Second Notification', 'polygon' ),
-			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
-			'ok-button-label'         => __( 'Internal URL', 'polygon' ),
-			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
+			'title'                   => esc_html__( 'Second Notification', 'polygon' ),
+			'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),
+			'ok-button-label'         => esc_html__( 'Internal URL', 'polygon' ),
+			'no-button-label'         => esc_html__( 'Hide Notice', 'polygon' ),
 			'internal-url'            => 'edit-tags.php?taxonomy=category',
 			'id-next'                 => 'polygon_notification_three',
 			'display-next-after-days' => 30,
@@ -64,26 +67,25 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 
 		$config[] = array(
 			'id'                      => 'polygon_notification_three',
-			'title'                   => __( 'Third Notification', 'polygon' ),
-			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
-			'ok-button-label'         => __( 'External URL', 'polygon' ),
-			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
+			'title'                   => esc_html__( 'Third Notification', 'polygon' ),
+			'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),
+			'ok-button-label'         => esc_html__( 'External URL', 'polygon' ),
+			'no-button-label'         => esc_html__( 'Hide Notice', 'polygon' ),
 			'external-url'            => 'https://polygonthemes.com',
 		);
 
 		$config[] = array(
 			'id'                      => 'polygon_notification_four',
 			'type'                    => 'error',
-			'title'                   => __( 'Action-Based Notification', 'polygon' ),
-			'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),
-			'no-button-label'         => __( 'Hide Notice', 'polygon' ),
+			'title'                   => esc_html__( 'Action-Based Notification', 'polygon' ),
+			'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),
+			'no-button-label'         => esc_html__( 'Hide Notice', 'polygon' ),
 			'trigger-callback'        => true,
 		);
 
 		return $config;
 	}
 	add_filter( 'polygon_admin_notifications', 'polygon_notifications_setup' );
-
 }
 
 
@@ -100,7 +102,6 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 
 
 if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
-
 	/**
 	 * Class for dynamic admin notifications.
 	 *
@@ -110,19 +111,19 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 	 *
 	 * function polygon_notifications_setup( $config ) {
 	 *     $config[] = array(
-	 *         'id'                      => 'polygon_notification_one',                                               // Unique notification ID containing the slug ( required )
-	 *         'type'                    => 'info',                                                                   // Notification type: info or error
-	 *         'title'                   => __( 'First Notification', 'polygon' ),                                    // Notification title
-	 *         'description'             => __( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
-	 *         'ok-button-label'         => __( 'Do Something', 'polygon' ),                                          // Label for the OK button
-	 *         'no-button-label'         => __( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
-	 *         'internal-url'            => 'edit-tags.php?taxonomy=category',                                        // Internal URL for the OK button ( Relative to the admin url )
-	 *         'external-url'            => 'https://google.com',                                                     // External URL for the OK button
-	 *         'display-after-days'      => 30,                                                                       // Number of days after the notification is displayed
-	 *         'id-next'                 => 'polygon_notification_two',                                               // ID of the next notification to display
-	 *         'display-next-after-days' => 30,                                                                       // Number of days after the next notification is displayed
-	 *         'trigger-callback'        => trigger_logic(),                                                          // Callback function returning true or false to trigger notification on demand
-	 *         'slim-notification'       => true,                                                                     // Remove extra margins for slimmer notifications
+	 *         'id'                      => 'polygon_notification_one',                                                       // Unique notification ID containing the slug ( required )
+	 *         'type'                    => 'info',                                                                           // Notification type: info or error
+	 *         'title'                   => esc_html__( 'First Notification', 'polygon' ),                                    // Notification title
+	 *         'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
+	 *         'ok-button-label'         => esc_html__( 'Do Something', 'polygon' ),                                          // Label for the OK button
+	 *         'no-button-label'         => esc_html__( 'Hide Notice', 'polygon' ),                                           // Label for the NO button
+	 *         'internal-url'            => 'edit-tags.php?taxonomy=category',                                                // Internal URL for the OK button ( Relative to the admin url )
+	 *         'external-url'            => 'https://google.com',                                                             // External URL for the OK button
+	 *         'display-after-days'      => 30,                                                                               // Number of days after the notification is displayed
+	 *         'id-next'                 => 'polygon_notification_two',                                                       // ID of the next notification to display
+	 *         'display-next-after-days' => 30,                                                                               // Number of days after the next notification is displayed
+	 *         'trigger-callback'        => trigger_logic(),                                                                  // Callback function returning true or false to trigger notification on demand
+	 *         'slim-notification'       => true,                                                                             // Remove extra margins for slimmer notifications
 	 *     );
 	 *     return $config;
 	 * }
@@ -157,7 +158,6 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 		 * @since 1.0.0
 		 */
 		public function __construct() {
-
 			// Retreive dynamic notifications.
 			$this->notices = apply_filters( 'polygon_admin_notifications', null );
 
@@ -187,7 +187,6 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 
 			foreach ( $users as $user ) {
 				foreach ( $notices as $notice ) {
-
 					// Per item variables.
 					if ( isset( $notice['id'] ) ) {
 						$id = $notice['id'];
@@ -234,7 +233,6 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 
 				if ( $notices ) {
 					foreach ( $notices as $notice ) {
-
 						// Variables.
 						if ( isset( $notice['id'] ) ) {
 							$id = $notice['id'];
@@ -243,7 +241,7 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 						}
 
 						if ( isset( $notice['type'] ) ) {
-							if ( 'error' == $notice['type'] ) {
+							if ( $notice['type'] == 'error' ) {
 								$type = 'error';
 							} else {
 								$type = 'updated';
@@ -306,14 +304,20 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 							$slim_notification = false;
 						}
 
+
+
 						// User meta key IDs.
 						$meta_key_flag      = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
 						$meta_key_timestamp = sanitize_title_with_dashes( $notice['id'] . '_timestamp' );
+
+
 
 						// Manipulate variables.
 						if ( $display_after_days ) {
 							$display_after_days = $display_after_days * DAY_IN_SECONDS;
 						}
+
+
 
 						// Set the initial timestamp.
 						if ( ! get_user_meta( $current_user->ID, $meta_key_timestamp ) ) {
@@ -324,8 +328,12 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 							}
 						}
 
+
+
 						// Retreive the current timestamp.
 						$display_after_days_timestamp = get_user_meta( $current_user->ID, $meta_key_timestamp, true );
+
+
 
 						// Display notification.
 						if ( ( $trigger_callback && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) ||
@@ -422,6 +430,8 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 							$display_next_after_days = false;
 						}
 
+
+
 						// User meta key IDs.
 						$meta_key_flag = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
 
@@ -429,13 +439,17 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 							$meta_key_timestamp_next = sanitize_title_with_dashes( $notice['id-next'] . '_timestamp' );
 						}
 
+
+
 						// Manipulate variables.
 						if ( $display_next_after_days ) {
 							$display_next_after_days = $display_next_after_days * DAY_IN_SECONDS;
 						}
 
+
+
 						// Update user meta when the NO button is pressed.
-						if ( isset( $_GET[ $meta_key_flag ] ) && ( 0 == $_GET[ $meta_key_flag ] ) ) {
+						if ( isset( $_GET[ $meta_key_flag ] ) && ( $_GET[ $meta_key_flag == 0 ] ) ) {
 							if ( ( $id_next ) && ( $display_next_after_days ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) {
 								update_user_meta( $current_user->ID, $meta_key_timestamp_next, time() + $display_next_after_days );
 							}
@@ -446,7 +460,6 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 			}
 		}
 	}
-
 }
 
 
