@@ -194,9 +194,13 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 						continue;
 					}
 
+
+
 					// User meta key IDs.
 					$meta_key_flag      = sanitize_title_with_dashes( $notice['id'] . '_ignore_flag' );
 					$meta_key_timestamp = sanitize_title_with_dashes( $notice['id'] . '_timestamp' );
+
+
 
 					// Remove old user meta.
 					delete_user_meta( $user->ID, $meta_key_flag );
