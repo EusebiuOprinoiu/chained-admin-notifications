@@ -243,7 +243,7 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 						}
 
 						if ( isset( $notice['type'] ) ) {
-							if ( 'error' === $notice['type'] ) {
+							if ( 'error' == $notice['type'] ) {
 								$type = 'error';
 							} else {
 								$type = 'updated';
@@ -435,7 +435,7 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 						}
 
 						// Update user meta when the NO button is pressed.
-						if ( isset( $_GET[ $meta_key_flag ] ) && ( 0 === $_GET[ $meta_key_flag ] ) ) {
+						if ( isset( $_GET[ $meta_key_flag ] ) && ( 0 == $_GET[ $meta_key_flag ] ) ) {
 							if ( ( $id_next ) && ( $display_next_after_days ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) {
 								update_user_meta( $current_user->ID, $meta_key_timestamp_next, time() + $display_next_after_days );
 							}
