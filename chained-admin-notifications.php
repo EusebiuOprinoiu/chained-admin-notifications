@@ -27,7 +27,7 @@ if ( ! function_exists( 'polygon_notifications_setup' ) ) {
 		// Example with all parameters.
 		$config[] = array(
 			'id'                      => 'polygon_notification_one',                                                       // Unique notification ID containing the slug ( required ).
-			'type'                    => 'info',                                                                           // Notification type: info or error.
+			'type'                    => 'info',                                                                           // Notification type: error, warning, success ot info.
 			'title'                   => esc_html__( 'First Notification', 'polygon' ),                                    // Notification title.
 			'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description.
 			'ok-button-label'         => esc_html__( 'Do Something', 'polygon' ),                                          // Label for the OK button.
@@ -112,7 +112,7 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 	 * function polygon_notifications_setup( $config ) {
 	 *     $config[] = array(
 	 *         'id'                      => 'polygon_notification_one',                                                       // Unique notification ID containing the slug ( required )
-	 *         'type'                    => 'info',                                                                           // Notification type: info or error
+	 *         'type'                    => 'info',                                                                           // Notification type: error, warning, success ot info.
 	 *         'title'                   => esc_html__( 'First Notification', 'polygon' ),                                    // Notification title
 	 *         'description'             => esc_html__( 'Say something nice and useful to your admin users.', 'polygon' ),    // Notification description
 	 *         'ok-button-label'         => esc_html__( 'Do Something', 'polygon' ),                                          // Label for the OK button
@@ -244,14 +244,10 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 							continue;
 						}
 
-						if ( isset( $notice['type'] ) ) {
-							if ( $notice['type'] == 'error' ) {
-								$type = 'error';
-							} else {
-								$type = 'updated';
-							}
+						if ( isset( $notice['type'] ) && in_array( $notice['type'], array( 'error', 'warning', 'success', 'info' ) ) ) {
+							$type = $notice['type'];
 						} else {
-							$type = 'updated';
+							$type = 'info';
 						}
 
 						if ( isset( $notice['title'] ) ) {
@@ -343,7 +339,7 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 						if ( ( $trigger_callback && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) ||
 							( ( ! $trigger_callback ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) && ( $display_after_days_timestamp < time() ) ) ) {
 								?>
-									<div class="<?php echo sanitize_html_class( $type ); ?> notice polygon-notice">
+									<div class="notice notice-<?php echo sanitize_html_class( $type ); ?> polygon-notice">
 										<?php if ( ! $slim_notification ) { ?>
 											<p></p>
 										<?php } ?>
@@ -453,7 +449,7 @@ if ( ! class_exists( 'Polygon_Admin_Notifications' ) ) {
 
 
 						// Update user meta when the NO button is pressed.
-						if ( isset( $_GET[ $meta_key_flag ] ) && ( $_GET[ $meta_key_flag == 0 ] ) ) {
+						if ( isset( $_GET[ $meta_key_flag ] ) && ( $_GET[ $meta_key_flag ] == 0 ) ) {
 							if ( ( $id_next ) && ( $display_next_after_days ) && ( ! get_user_meta( $current_user->ID, $meta_key_flag ) ) ) {
 								update_user_meta( $current_user->ID, $meta_key_timestamp_next, time() + $display_next_after_days );
 							}
